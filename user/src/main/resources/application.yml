@@ -1,0 +1,15 @@
+  spring:
+    datasource:
+      url: jdbc:mysql://localhost:3306/kalpashram?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
+      username: root
+      password: root
+
+
+    jpa:
+      database-platform: org.hibernate.dialect.MySQLDialect
+      hibernate:
+        ddl-auto: update       # options: validate | update | create | create-drop
+      show-sql: true
+      properties:
+        hibernate:
+          format_sql: true
