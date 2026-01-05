@@ -9,6 +9,7 @@ Simple Spring Boot application with one REST API.
 - MySQL
 - Spring Security
 - Maven3
+- spring cloud
 
 ## Run Locally
 ```bash
