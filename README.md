@@ -20,5 +20,5 @@ Commit it:
 
 ```bash
 git add README.md
-git commit -m "Add README"
+git commit -m "add README"
 git push
