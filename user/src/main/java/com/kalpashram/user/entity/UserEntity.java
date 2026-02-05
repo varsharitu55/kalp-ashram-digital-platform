@@ -4,7 +4,8 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
-@Entity(name = "user")
+@Entity
+@Table(name = "users")
 @Getter
 @Setter
 public class UserEntity extends BaseEntity {

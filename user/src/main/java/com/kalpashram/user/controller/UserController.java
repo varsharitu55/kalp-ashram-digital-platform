@@ -1,15 +1,19 @@
 package com.kalpashram.user.controller;
 
+import com.kalpashram.user.constants.UserConstants;
+import com.kalpashram.user.dto.ResponseDto;
 import com.kalpashram.user.dto.UserDto;
+import com.kalpashram.user.entity.UserEntity;
 import com.kalpashram.user.service.IUserService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping(path="/api" , produces = {MediaType.APPLICATION_JSON_VALUE})
@@ -23,10 +27,27 @@ public class UserController {
     }
 
     @GetMapping("/fetchUser")
+    @Operation(summary = "Fetch user details", description = "Returns user details for given mobile number")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "User fetched successfully"),
+            @ApiResponse(responseCode = "400", description = "User not found")
+    })
     public ResponseEntity<UserDto> fetchUserDetail(@RequestParam String mobileNumber)
     {
       UserDto userDetail = iUserService.fetchUser(mobileNumber);
       return  ResponseEntity.status(HttpStatus.OK).body(userDetail);
+    }
+
+    @PostMapping("/registerUser")
+    @Operation(summary = "Create a new user", description = "Registers a new user with name and mobile number")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "User created successfully"),
+            @ApiResponse(responseCode = "400", description = "Validation error or user already exists")
+    })
+    public ResponseEntity<ResponseDto> registerUser(@Valid @RequestBody UserDto user)
+    {
+        iUserService.registerUser(user);
+        return  ResponseEntity.status(HttpStatus.CREATED).body(new ResponseDto(UserConstants.STATUS_201,UserConstants.MESSAGE_201));
     }
 
 }

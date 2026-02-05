@@ -6,4 +6,5 @@ import org.springframework.stereotype.Service;
 @Service
 public interface IUserService {
     UserDto fetchUser(String mobileNumber);
+    void registerUser(UserDto user);
 }
