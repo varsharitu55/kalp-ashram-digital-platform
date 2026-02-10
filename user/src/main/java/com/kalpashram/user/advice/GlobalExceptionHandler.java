@@ -9,10 +9,12 @@ import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
 import org.springframework.validation.ObjectError;
+import org.springframework.validation.method.ParameterValidationResult;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
+import org.springframework.web.method.annotation.HandlerMethodValidationException;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import java.time.LocalDateTime;
@@ -24,13 +26,25 @@ import java.util.Map;
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
     @Override
-    public ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatusCode status, WebRequest request) {
+    protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatusCode status, WebRequest request) {
         Map<String, String> validationErrorMap = new HashMap<>();
         List<ObjectError> validationErrorList = ex.getBindingResult().getAllErrors();
-        validationErrorList.forEach((error) -> {
+        validationErrorList.forEach(error -> {
             String field = ((FieldError) error).getField();
             String message = ((FieldError) error).getDefaultMessage();
             validationErrorMap.put(field, message);
+        });
+        return new ResponseEntity<>(validationErrorMap, HttpStatus.BAD_REQUEST);
+    }
+
+    @Override
+    protected ResponseEntity<Object> handleHandlerMethodValidationException(HandlerMethodValidationException ex, HttpHeaders headers, HttpStatusCode status, WebRequest request) {
+        Map<String, String> validationErrorMap = new HashMap<>();
+        List<ParameterValidationResult> validationErrorList = ex.getAllValidationResults();
+        validationErrorList.forEach(result -> {
+            String parameterName = result.getMethodParameter().getParameterName();
+            result.getResolvableErrors().forEach(error -> validationErrorMap.put(parameterName, error.getDefaultMessage()));
+
         });
         return new ResponseEntity<>(validationErrorMap, HttpStatus.BAD_REQUEST);
     }

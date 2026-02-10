@@ -13,6 +13,15 @@ import lombok.Data;
         description = "Schema to hold user information"
 )
 public class UserDto {
+    public UserDto() {
+    }
+
+    public UserDto(String name, String mobileNumber, String email, String userRole) {
+        this.name = name;
+        this.mobileNumber = mobileNumber;
+        this.email = email;
+        this.userRole = userRole;
+    }
 
     private Long userId;
     @Schema(description = "Full name of the user", example = "Varsha Kumari")

@@ -27,18 +27,17 @@ public class UserServiceImpl implements IUserService {
     public void registerUser(UserDto userDto) {
 
         UserEntity user = UserMapper.mapToEntity(userDto, new UserEntity());
-        Optional<UserEntity> userDetail= userRepository.findByMobileNumber(user.getMobileNumber());
-        if(userDetail.isPresent())
-            throw new UserAlreadyExistException("User already exist with mobile number " +user.getMobileNumber());
+        Optional<UserEntity> userDetail = userRepository.findByMobileNumber(user.getMobileNumber());
+        if (userDetail.isPresent())
+            throw new UserAlreadyExistException("User already exist with mobile number " + user.getMobileNumber());
         userRepository.save(user);
 
     }
 
     @Override
     public UserDto fetchUser(String mobileNumber) {
-        UserEntity userDetail = userRepository.findByMobileNumber(mobileNumber).orElseThrow(()->new ResourceNotFoundException("User with this mobile " + mobileNumber+ " does not exit"));
-        UserDto user = UserMapper.mapToUserDto(userDetail, new UserDto());
-        return user;
-    }
+        UserEntity userDetail = userRepository.findByMobileNumber(mobileNumber).orElseThrow(() -> new ResourceNotFoundException("User with this mobile " + mobileNumber + " does not exit"));
+        return UserMapper.mapToUserDto(userDetail, new UserDto());
+       }
 
 }
