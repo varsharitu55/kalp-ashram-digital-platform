@@ -1,0 +1,20 @@
+<section class="section">
+  <div class="container">
+
+    <h2 class="section-title">A Glimpse Into Our Beautiful Spaces</h2>
+    <p class="section-text">
+      A visual journey through Kalp Ashram and Aardhya Resort — our spaces, décor, and unforgettable gatherings.
+    </p>
+
+    <div class="gallery-grid grid-3">
+      <div class="gallery-card card" *ngFor="let image of images">
+        <img [src]="image.src" [alt]="image.title"/>
+        <!-- Optional overlay, can remove if you want minimal -->
+        <div class="overlay">
+          <p>{{ image.title }}</p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>

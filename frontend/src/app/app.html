@@ -1,0 +1,60 @@
+<!--<div class="registration-container">-->
+<!--  <h2>Register for Kalpashram</h2>-->
+
+<!--  <form [formGroup]="userForm" (ngSubmit)="onRegister()">-->
+<!--    <div class="form-group">-->
+<!--      <label>Full Name</label>-->
+<!--      <input type="text" formControlName="name">-->
+<!--      <small class="error" *ngIf="backendErrors.name">{{ backendErrors.name }}</small>-->
+<!--    </div>-->
+
+<!--    <div class="form-group">-->
+<!--      <label>Mobile Number</label>-->
+<!--      <input type="text" formControlName="mobileNumber">-->
+<!--      <small class="error" *ngIf="userForm.get('mobileNumber')?.touched && userForm.get('mobileNumber')?.errors?.['pattern']">-->
+<!--        Must be exactly 10 digits.-->
+<!--      </small>-->
+<!--      <small class="error" *ngIf="backendErrors.mobileNumber">{{ backendErrors.mobileNumber }}</small>-->
+<!--    </div>-->
+
+<!--    <div class="form-group">-->
+<!--      <label>Email</label>-->
+<!--      <input type="email" formControlName="email">-->
+<!--      <small class="error" *ngIf="backendErrors.email">{{ backendErrors.email }}</small>-->
+<!--    </div>-->
+
+<!--    <div class="form-group">-->
+<!--      <label>Role</label>-->
+<!--      <input type="text" formControlName="userRole">-->
+<!--      <small class="error" *ngIf="backendErrors.userRole">{{ backendErrors.userRole }}</small>-->
+<!--    </div>-->
+<!--    <button type="submit" [disabled]="userForm.invalid">Register</button>-->
+<!--  </form>-->
+<!--</div>-->
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+<app-navbar></app-navbar>
+<!-- Floating Social Media Icons (Top Right) -->
+<div class="social-container">
+  <a href="https://www.facebook.com/profile.php?id=100017007450292" target="_blank" class="social-btn facebook" data-label="Follow us on Facebook"><i
+    class="fa-brands fa-facebook-f"></i></a>
+  <a href="https://www.instagram.com/aradhya_resort" target="_blank" class="social-btn instagram" data-label="Follow us on Instagram"><i
+    class="fa-brands fa-instagram"></i></a>
+  <a href="https://www.youtube.com/@kalpashram7523" target="_blank" class="social-btn youtube"><i
+    class="fa-brands fa-youtube" data-label="Follow us on Youtube"></i></a>
+  <a href="https://maps.app.goo.gl/dsakxQQ8A7Vsijrt5"
+     target="_blank"
+     class="social-btn gmap" data-label="Find kalpashram on google Map ">
+    <i class="fa-solid fa-location-dot"></i>
+  </a>
+  <!-- Floating JustDial Button -->
+  <a href="https://jsdl.in/DT-99TL6PVG3HM"
+     target="_blank"
+     class="social-btn justdial" data-label="Visit kalpashram on JustDial">
+    <i class="fa-solid fa-star"></i>
+  </a>
+
+</div>
+<router-outlet></router-outlet>
+<app-footer></app-footer>
+
+

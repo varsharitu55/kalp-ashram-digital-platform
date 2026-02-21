@@ -1,0 +1,74 @@
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 20px;
+  position: relative;
+  z-index: 9999; /* keeps navbar above hero */
+  background: white;
+
+}
+
+.nav-links {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap; /* <-- THIS makes Contact visible */
+}
+
+.nav-links li {
+  list-style: none;
+}
+
+.nav-links a {
+  text-decoration: none;
+  color: inherit;
+}
+.logo-title {
+  font-family: 'Poppins', sans-serif;
+  font-size: 30px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+.logo-tagline {
+  font-family: 'Poppins', sans-serif;
+  font-size: 12px;
+  font-weight: 300;
+  letter-spacing: 0.5px;
+}
+.logo {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.logo-img {
+  height: 50px;
+  width: 150px;
+  margin-left: 15px; /* spacing below logo */
+}
+
+.logo-slogan-img {
+  height: 25px; /* smaller than main logo */
+  width: 200px;
+
+  margin-left: 10px; /* spacing below logo */
+}
+app-navbar {
+  position: relative;
+  z-index: 9999;
+  display: block;
+}
+.banner {
+  width: 100%;          /* full width */
+  overflow: hidden;     /* avoid horizontal scroll */
+}
+.banner img {
+  padding: 10px;
+  width: 100%;
+  height: 40vh;
+  object-fit: cover;
+  display: block;
+}
+
+

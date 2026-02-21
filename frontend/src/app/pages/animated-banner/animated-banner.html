@@ -1,0 +1,7 @@
+<section class="text-banner" [ngStyle]="{'background-color': bgColor}">
+  <div class="particles"></div>
+  <div class="text-banner-content">
+    <h1 class="animated-text">{{ title }}</h1>
+    <p class="animated-text" *ngFor="let line of lines">{{ line }}</p>
+  </div>
+</section>

@@ -1,0 +1,154 @@
+/* MAIN GRID (4 sections) */
+.container {
+  width: 85%;
+  margin: auto;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 40px;
+
+}
+
+/* ICON CIRCLE — Option 1 (Gradient Glow) */
+.icon-circle {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #ffffff, #f3e9ff);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 20px auto;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.12);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.icon-circle:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 12px 28px rgba(0,0,0,0.18);
+}
+
+.icon-circle img {
+  width: 60px;
+  height: 60px;
+}
+
+/* TYPOGRAPHY */
+.section-title {
+  font-size: 26px;
+  font-weight: 600;
+  color: #2e2e2e;
+  margin-bottom: 12px;
+  letter-spacing: 0.5px;
+  font-family: "Playfair Display", serif;
+}
+
+.section-text {
+  font-size: 16px;
+  color: #555;
+  line-height: 1.75;
+  font-family: "Poppins", sans-serif;
+  margin: 0 auto;
+  max-width: 320px;
+}
+
+/* HOVER ANIMATION FOR ALL 4 SECTIONS */
+.container-left,
+.container-center,
+.container-right,
+.container-fourth {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.container-left h2,
+.container-center h2,
+.container-right h2,
+.container-fourth h2{
+  margin-bottom: 10px;
+    color: #333;
+}
+
+.container-left:hover,
+.container-center:hover,
+.container-right:hover,
+.container-fourth:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 12px 28px rgba(0,0,0,0.12);
+}
+
+/* STYLISH BULLET LIST */
+.container-fourth ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.container-fourth ul li {
+  position: relative;
+  padding-left: 22px;
+  margin-bottom: 10px;
+  font-size: 15px;
+  color: #555;
+  font-family: "Poppins", sans-serif;
+}
+
+.container-fourth ul li::before {
+  content: "•";
+  position: absolute;
+  left: 0;
+  top: 0;
+  color: #8b4f9f; /* soft plum accent */
+  font-size: 20px;
+  line-height: 1;
+}
+
+/* RESPONSIVE GRID */
+
+/* Tablet */
+@media (max-width: 992px) {
+  .container {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 30px;
+  }
+}
+.section-subtitle-list {
+  list-style: none;
+  padding: 0;
+  margin: 0 auto 40px auto;
+  text-align: center;
+  max-width: 700px;
+}
+
+.section-subtitle-list li {
+  font-family: "Poppins", sans-serif;
+  font-size: 18px;
+  font-weight: 400;
+  color: #2a2a2a;
+  margin-bottom: 6px;
+  letter-spacing: 0.3px;
+
+  /* soft fade-in like other subtitles */
+  opacity: 0;
+  animation: fadeInSoft 1.2s ease-out forwards;
+}
+
+@keyframes fadeInSoft {
+  0% {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Mobile */
+@media (max-width: 600px) {
+  .container {
+    grid-template-columns: 1fr;
+    gap: 25px;
+  }
+
+  .section-text {
+    max-width: 90%;
+  }
+}

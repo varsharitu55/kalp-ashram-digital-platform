@@ -1,0 +1,67 @@
+.contact-section {
+  padding: 70px 0;
+  background: linear-gradient(135deg, #f3eef7, #ffffff);
+}
+
+.contact-wrapper {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+  margin-top: 40px;
+  align-items: start;
+}
+
+/* LEFT COLUMN */
+.contact-details {
+  background: #ffffff;
+  padding: 30px;
+  border-radius: 10px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+  border: 1px solid #eee;
+}
+
+.detail-box {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 25px;
+}
+
+.detail-icon {
+  width: 35px;
+  height: 35px;
+  opacity: 1;
+}
+
+.detail-box h4 {
+  font-family: "Playfair Display", serif;
+  font-size: 18px;
+  color: #2e2e2e;
+  margin-bottom: 3px;
+}
+
+.detail-box p {
+  font-family: "Poppins", sans-serif;
+  font-size: 15px;
+  color: #555;
+}
+
+/* RIGHT COLUMN (FORM CARD) */
+.form-card {
+  background: #ffffff;
+  padding: 35px 40px;
+  border-radius: 10px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.12);
+  border: 1px solid #eee;
+}
+
+/* RESPONSIVE */
+@media (max-width: 900px) {
+  .contact-wrapper {
+    grid-template-columns: 1fr;
+  }
+
+  .form-card {
+    padding: 25px;
+  }
+}

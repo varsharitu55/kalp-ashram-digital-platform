@@ -1,0 +1,35 @@
+<div class="form-card">
+
+  <h3>Enquiry Form</h3>
+
+  <form class="enquiry-form" [formGroup]="enquiryForm" (ngSubmit)="submitEnquiry()">
+    <label>Name</label>
+    <input type="text" name="name" formControlName="name" placeholder="Your Name" required>
+
+    <label>Email</label>
+    <input type="email" placeholder="Your Email" formControlName="email">
+
+    <label>Phone</label>
+    <input type="text" placeholder="Your Phone Number" formControlName="phone">
+
+    <label>Message</label>
+    <textarea placeholder="How can we help you?" formControlName="message" required></textarea>
+
+    <button type="submit" [disabled]="enquiryForm.invalid">Send Enquiry</button>
+  </form>
+  <!--  <form class="contact-form">-->
+
+  <!--    <input type="text" placeholder="Your Name">-->
+
+  <!--    <input type="email" placeholder="Your Email">-->
+
+  <!--    <input type="text" placeholder="Event Type">-->
+
+  <!--    <input type="date">-->
+
+  <!--    <textarea placeholder="Tell us about your event"></textarea>-->
+
+  <!--    <button type="submit">Submit Inquiry</button>-->
+
+  <!--  </form>-->
+</div>
