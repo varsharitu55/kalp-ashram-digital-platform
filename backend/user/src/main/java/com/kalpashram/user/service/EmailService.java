@@ -16,6 +16,8 @@ public class EmailService {
         msg.setTo("kalpashram@gmail.com");
         msg.setSubject("New Enquiry Received");
         msg.setText("Name: " + req.getName() + "\n" + "Email: " + req.getEmail() + "\n" + "Phone: " + req.getPhone() + "\n" + "Message: " + req.getMessage());
+        System.out.println("SMTP PASSWORD = " + System.getenv("SMTP_PASSWORD"));
+
         mailSender.send(msg);
     }
 }
