@@ -25,7 +25,7 @@ public class UserServiceTest {
     private UserServiceImpl userService;
 
     @Test
-    public void registerUser_Success() {
+    void registerUser_Success() {
         UserDto userDto = new UserDto("varsha", "7838834930", "varsharitu55@gmail.com", "admin");
         //mock repo behavior
         when(userRepository.save(any(UserEntity.class))).thenReturn(new UserEntity());
@@ -37,7 +37,7 @@ public class UserServiceTest {
     }
 
     @Test
-    public void registerUser_AlreadyExist() {
+    void registerUser_AlreadyExist() {
         UserDto userDto = new UserDto("varsha", "7838834930", "varsharitu55@gmail.com", "admin");
         //mock repo behavior
         when(userRepository.findByMobileNumber("7838834930")).thenReturn(Optional.of(new UserEntity()));
@@ -48,7 +48,7 @@ public class UserServiceTest {
     }
 
     @Test
-    public void fetchUser_Success() {
+    void fetchUser_Success() {
 
         UserEntity userEntity = new UserEntity();
         userEntity.setName("varsha");
@@ -67,7 +67,7 @@ public class UserServiceTest {
     }
 
     @Test
-    public void fetchUser_UserNotExist() {
+    void fetchUser_UserNotExist() {
 
         //mock repo behavior
         when(userRepository.findByMobileNumber("7838834930")).thenReturn(Optional.empty());

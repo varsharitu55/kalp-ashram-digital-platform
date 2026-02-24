@@ -40,7 +40,7 @@ public class EnquiryControllerTest {
     ObjectMapper objectMapper;
     @Test
     @WithMockUser(username = "admin", roles = {"ADMIN"})
-    public void sendEnquirySuccess( ) throws Exception {
+    void sendEnquirySuccess( ) throws Exception {
         EnquiryRequestDto enquiry = new EnquiryRequestDto();
         enquiry.setEmail("v@gmail.com");
         enquiry.setName("varsha");

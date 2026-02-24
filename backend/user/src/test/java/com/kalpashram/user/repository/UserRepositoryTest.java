@@ -22,7 +22,7 @@ public class UserRepositoryTest {
     private UserRepository userRepository;
 
     @Test
-    public void findByMobileNumber_ReturnsUser() {
+    void findByMobileNumber_ReturnsUser() {
         UserEntity userEntity = new UserEntity();
         userEntity.setName("varsha");
         userEntity.setEmail("varsharitu55@gmail.com");
