@@ -5,6 +5,7 @@ import { CommonModule } from '@angular/common';
 import { RouterOutlet } from '@angular/router';
 import { NavbarComponent } from './pages/navbar/navbar';
 import { FooterComponent } from './pages/footer/footer';
+import { Title } from '@angular/platform-browser';
 @Component({
   selector: 'app-root',
   standalone: true,
@@ -13,6 +14,8 @@ import { FooterComponent } from './pages/footer/footer';
   styleUrl: './app.css'
 })
 export class AppComponent {
+  title = 'kalpashram';
+
   // 1. You MUST declare the property here so the HTML can see it
   userForm: FormGroup;
 
@@ -20,7 +23,8 @@ export class AppComponent {
   private http = inject(HttpClient);
   backendErrors: any = {};
 
-  constructor() {
+  constructor(private titleService: Title) {
+    this.titleService.setTitle(this.title);
     // 2. Now you initialize it
     this.userForm = this.fb.group({
       name: ['', Validators.required],

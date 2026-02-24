@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { AnimatedBanner } from './animated-banner';
+import { AnimatedBannerComponent } from './animated-banner';
 
 describe('AnimatedBanner', () => {
-  let component: AnimatedBanner;
-  let fixture: ComponentFixture<AnimatedBanner>;
+  let component: AnimatedBannerComponent;
+  let fixture: ComponentFixture<AnimatedBannerComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [AnimatedBanner]
+      imports: [AnimatedBannerComponent]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(AnimatedBanner);
+    fixture = TestBed.createComponent(AnimatedBannerComponent);
     component = fixture.componentInstance;
     await fixture.whenStable();
   });
