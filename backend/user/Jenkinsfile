@@ -1,12 +1,60 @@
 pipeline {
     agent any
 
+    tools {
+        maven 'Maven3'
+        jdk 'JDK21'
+    }
+
     stages {
-        stage('Test') {
+
+        stage('Checkout Code') {
             steps {
-                echo "Pipeline for this service is working"
+                git branch: 'main',
+                    credentialsId: 'github-creds',
+                    url: 'https://github.com/varsharitu55/kalp-ashram-digital-platform.git'
+            }
+        }
+
+        stage('Build, Test & SonarQube Analysis') {
+            steps {
+                dir('backend/user') {
+                    withSonarQubeEnv('SonarQube') {
+                        bat 'mvn clean verify sonar:sonar'
+                    }
+                }
+            }
+        }
+
+        stage('Quality Gate') {
+            steps {
+                timeout(time: 5, unit: 'MINUTES') {
+                    waitForQualityGate abortPipeline: false
+                }
+            }
+        }
+
+        stage('Archive') {
+            steps {
+                archiveArtifacts artifacts: 'user/target/*.jar', fingerprint: true
+            }
+        }
+
+        stage('Deploy') {
+            steps {
+                dir('user') {
+                    bat 'start java -jar target/user-0.0.1-SNAPSHOT.jar'
+                }
             }
         }
     }
+
+    post {
+        success {
+            echo 'Build successful!'
+        }
+        failure {
+            echo 'Build failed!'
+        }
+    }
 }
-    

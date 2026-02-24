@@ -14,4 +14,5 @@ public final class UserConstants {
     public static final String  MESSAGE_404 = "Resource not found";
     public static final String  STATUS_400 = "400";
     public static final String  MESSAGE_400 = "Invalid Request";
+
 }

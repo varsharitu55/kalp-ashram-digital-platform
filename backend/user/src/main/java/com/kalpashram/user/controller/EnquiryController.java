@@ -33,8 +33,8 @@ public class EnquiryController {
             @ApiResponse(responseCode = "200", description = "Enquiry sent successfully"),
             @ApiResponse(responseCode = "400", description = "Validation error")
     })
-    public ResponseEntity<ResponseDto> registerUser(@Valid @RequestBody EnquiryRequestDto enquiry) {
+    public ResponseEntity<ResponseDto> sendEnquiry(@Valid @RequestBody EnquiryRequestDto enquiry) {
         emailService.sendEnquiryEmail(enquiry);
-        return ResponseEntity.status(HttpStatus.CREATED).body(new ResponseDto(UserConstants.STATUS_400, UserConstants.MESSAGE_400));
+        return ResponseEntity.status(HttpStatus.CREATED).body(new ResponseDto(UserConstants.STATUS_200, UserConstants.MESSAGE_200));
     }
 }
