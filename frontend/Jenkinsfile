@@ -48,35 +48,10 @@ stage('Check Java') {
            steps {
                dir('frontend') {
                    withSonarQubeEnv("${SONARQUBE_ENV}") {
-                   stage('SonarQube Analysis') {
-                       steps {
-                           dir('frontend') {
-                               withSonarQubeEnv("${SONARQUBE_ENV}") {
 
-                                   // ⭐ This line fixes the workspace mismatch
-                                   script {
-                                       env.SONAR_SCANNER_OPTS = "-Dsonar.working.directory=${pwd()}"
-                                   }
-
-                                   bat """
-                                   npx sonar-scanner ^
-                                     -Dsonar.projectKey=KalpashramFrontend ^
-                                     -Dsonar.projectName=Kalpashram-frontend ^
-                                     -Dsonar.sources=src ^
-                                     -Dsonar.exclusions=**\\*.spec.ts ^
-                                     -Dsonar.tests= ^
-                                     -Dsonar.typescript.lcov.reportPaths=coverage\\lcov.info ^
-                                     -Dsonar.host.url=http://localhost:9000 ^
-                                     -Dsonar.login=%SONAR_TOKEN%
-                                   """
-
-                                   timeout(time: 5, unit: 'MINUTES') {
-                                       waitForQualityGate abortPipeline: false
-                                   }
-                               }
-                           }
+                       script {
+                           env.SONAR_SCANNER_OPTS = "-Dsonar.working.directory=${pwd()}"
                        }
-                   }
 
                        bat """
                        npx sonar-scanner ^
@@ -90,7 +65,6 @@ stage('Check Java') {
                          -Dsonar.login=%SONAR_TOKEN%
                        """
 
-                       // ⭐ MUST be inside the same block
                        timeout(time: 5, unit: 'MINUTES') {
                            waitForQualityGate abortPipeline: false
                        }
@@ -98,6 +72,7 @@ stage('Check Java') {
                }
            }
        }
+
 
         stage('Build (Production)') {
             steps {
