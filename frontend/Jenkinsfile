@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     tools {
-        nodejs 'Node18'
+        nodejs 'Node20'
     }
 
     environment {
@@ -63,6 +63,7 @@ stage('SonarQube Analysis') {
         }
     }
 }
+
 
         stage('Build (Production)') {
             steps {
