@@ -43,36 +43,26 @@ stage('Check Java') {
         """
     }
 }
+stage('SonarQube Analysis') {
+    steps {
+        withSonarQubeEnv("${SONARQUBE_ENV}") {
+            bat """
+            ${tool 'SonarQubeCLI'}\\bin\\sonar-scanner.bat ^
+              -Dsonar.projectKey=KalpashramFrontend ^
+              -Dsonar.projectName=Kalpashram-frontend ^
+              -Dsonar.sources=frontend/src ^
+              -Dsonar.exclusions=**\\*.spec.ts ^
+              -Dsonar.typescript.lcov.reportPaths=frontend\\coverage\\lcov.info ^
+              -Dsonar.host.url=http://localhost:9000 ^
+              -Dsonar.login=%SONAR_TOKEN%
+            """
+        }
 
-       stage('SonarQube Analysis') {
-           steps {
-               dir('frontend') {
-                   withSonarQubeEnv("${SONARQUBE_ENV}") {
-
-                       script {
-                           env.SONAR_SCANNER_OPTS = "-Dsonar.working.directory=${pwd()}"
-                       }
-
-                       bat """
-                       ${tool 'SonarQubeCLI'}\\bin\\sonar-scanner.bat ^
-                         -Dsonar.projectKey=KalpashramFrontend ^
-                         -Dsonar.projectName=Kalpashram-frontend ^
-                         -Dsonar.sources=src ^
-                         -Dsonar.exclusions=**\\*.spec.ts ^
-                         -Dsonar.tests= ^
-                         -Dsonar.typescript.lcov.reportPaths=coverage\\lcov.info ^
-                         -Dsonar.host.url=http://localhost:9000 ^
-                         -Dsonar.login=%SONAR_TOKEN%
-                       """
-
-                       timeout(time: 5, unit: 'MINUTES') {
-                           waitForQualityGate abortPipeline: false
-                       }
-                   }
-               }
-           }
-       }
-
+        timeout(time: 5, unit: 'MINUTES') {
+            waitForQualityGate abortPipeline: false
+        }
+    }
+}
 
         stage('Build (Production)') {
             steps {
