@@ -7,14 +7,16 @@
     </p>
 
     <div class="gallery-grid grid-3">
-      <div class="gallery-card card" *ngFor="let image of images">
-        <img [src]="image.src" [alt]="image.title"/>
-        <!-- Optional overlay, can remove if you want minimal -->
+      @for (image of images; track image) {
+      <div class="gallery-card card">
+        <img [src]="image.src" [alt]="image.title" />
         <div class="overlay">
           <p>{{ image.title }}</p>
         </div>
       </div>
+      }
     </div>
+
 
   </div>
 </section>

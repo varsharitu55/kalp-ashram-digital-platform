@@ -17,8 +17,8 @@ describe('App', () => {
   });*/
 
   it('should render title', async () => {
-    const fixture = TestBed.createComponent(AppComponent);
-    const app = fixture.componentInstance;
+    //const fixture = TestBed.createComponent(AppComponent);
+    //const app = fixture.componentInstance;
     const titleService = TestBed.inject(Title);
     /*await fixture.whenStable();
      const compiled = fixture.nativeElement as HTMLElement;

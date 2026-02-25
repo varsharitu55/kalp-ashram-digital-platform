@@ -21,10 +21,11 @@ export class AppComponent {
 
   private fb = inject(FormBuilder);
   private http = inject(HttpClient);
-  backendErrors: any = {};
-
-  constructor(private titleService: Title) {
+  //backendErrors: any = {};
+  private titleService = inject(Title);
+  constructor() {
     this.titleService.setTitle(this.title);
+
     // 2. Now you initialize it
     this.userForm = this.fb.group({
       name: ['', Validators.required],
