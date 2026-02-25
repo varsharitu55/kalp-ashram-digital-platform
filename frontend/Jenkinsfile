@@ -48,6 +48,36 @@ stage('Check Java') {
            steps {
                dir('frontend') {
                    withSonarQubeEnv("${SONARQUBE_ENV}") {
+                   stage('SonarQube Analysis') {
+                       steps {
+                           dir('frontend') {
+                               withSonarQubeEnv("${SONARQUBE_ENV}") {
+
+                                   // ⭐ This line fixes the workspace mismatch
+                                   script {
+                                       env.SONAR_SCANNER_OPTS = "-Dsonar.working.directory=${pwd()}"
+                                   }
+
+                                   bat """
+                                   npx sonar-scanner ^
+                                     -Dsonar.projectKey=KalpashramFrontend ^
+                                     -Dsonar.projectName=Kalpashram-frontend ^
+                                     -Dsonar.sources=src ^
+                                     -Dsonar.exclusions=**\\*.spec.ts ^
+                                     -Dsonar.tests= ^
+                                     -Dsonar.typescript.lcov.reportPaths=coverage\\lcov.info ^
+                                     -Dsonar.host.url=http://localhost:9000 ^
+                                     -Dsonar.login=%SONAR_TOKEN%
+                                   """
+
+                                   timeout(time: 5, unit: 'MINUTES') {
+                                       waitForQualityGate abortPipeline: false
+                                   }
+                               }
+                           }
+                       }
+                   }
+
                        bat """
                        npx sonar-scanner ^
                          -Dsonar.projectKey=KalpashramFrontend ^
