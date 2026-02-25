@@ -40,14 +40,15 @@ pipeline {
                 dir('frontend') {
                     withSonarQubeEnv("${SONARQUBE_ENV}") {
                         bat """
-                            npx sonar-scanner \
-                            -Dsonar.projectKey=kalpashram-frontend \
-                            -Dsonar.projectName=KalpashramFrontend \
-                            -Dsonar.sources=src \
-                            -Dsonar.exclusions=**/*.spec.ts \
-                            -Dsonar.tests= \
-                            -Dsonar.typescript.lcov.reportPaths=coverage/lcov.info || true
+                        npx sonar-scanner ^
+                          -Dsonar.projectKey=kalpashram-frontend ^
+                          -Dsonar.projectName=KalpashramFrontend ^
+                          -Dsonar.sources=src ^
+                          -Dsonar.exclusions=**\\*.spec.ts ^
+                          -Dsonar.tests= ^
+                          -Dsonar.typescript.lcov.reportPaths=coverage\\lcov.info
                         """
+
                     }
                 }
             }
