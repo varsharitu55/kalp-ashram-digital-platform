@@ -50,8 +50,8 @@ stage('Check Java') {
                     withSonarQubeEnv("${SONARQUBE_ENV}") {
                         bat """
                         npx sonar-scanner ^
-                          -Dsonar.projectKey=kalpashramFrontend ^
-                          -Dsonar.projectName=KalpashramFrontend ^
+                          -Dsonar.projectKey=KalpashramFrontend ^
+                          -Dsonar.projectName=Kalpashram-frontend ^
                           -Dsonar.sources=src ^
                           -Dsonar.exclusions=**\\*.spec.ts ^
                           -Dsonar.tests= ^
