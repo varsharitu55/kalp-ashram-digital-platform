@@ -54,7 +54,7 @@ stage('Check Java') {
                        }
 
                        bat """
-                       ${tool 'SonarScannerCLI'}\\bin\\sonar-scanner.bat ^
+                       ${tool 'SonarQubeCLI'}\\bin\\sonar-scanner.bat ^
                          -Dsonar.projectKey=KalpashramFrontend ^
                          -Dsonar.projectName=Kalpashram-frontend ^
                          -Dsonar.sources=src ^
