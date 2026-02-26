@@ -9,7 +9,14 @@ pipeline {
         SONARQUBE_ENV = 'SonarQube'
         SONAR_TOKEN = credentials('kalpashram-frontend-sonar-token')
     }
-
+  stages {
+        stage('Clean Install') {
+            steps {
+                // Clean old modules and lock file
+                sh 'rm -rf node_modules package-lock.json'
+                sh 'npm install --legacy-peer-deps'
+            }
+        }
     stages {
 
         stage('Checkout Code') {
@@ -43,6 +50,16 @@ stage('Check Java') {
         """
     }
 }
+
+
+        stage('Build (Production)') {
+            steps {
+                dir('frontend') {
+                    bat 'npm run build -- --configuration production'
+                }
+            }
+        }
+
 stage('SonarQube Analysis') {
     steps {
         withSonarQubeEnv("${SONARQUBE_ENV}") {
@@ -64,14 +81,6 @@ stage('SonarQube Analysis') {
     }
 }
 
-
-        stage('Build (Production)') {
-            steps {
-                dir('frontend') {
-                    bat 'npm run build -- --configuration production'
-                }
-            }
-        }
 
         stage('Archive Build Artifacts') {
             steps {
