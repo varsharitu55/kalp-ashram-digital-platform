@@ -47,6 +47,15 @@ pipeline {
                 }
             }
         }
+stage('Debug Workspace') {
+    steps {
+        bat 'cd'
+        bat 'dir'
+        bat 'dir node_modules'
+        bat 'dir node_modules\\@angular\\common'
+        bat 'dir node_modules\\@angular\\common\\http'
+    }
+}
 
         stage('Build') {
             steps {
