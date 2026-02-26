@@ -12,14 +12,30 @@ pipeline {
     }
 
     stages {
-       stage('Clean Install') {
-            steps {
-                // Clean old modules and lock file
-                 bat 'node -v'
-                 bat 'npm -v'
-                 bat 'npm install --legacy-peer-deps'
-            }
-        }
+       stage('Setup') {
+                   steps {
+                       // Use Windows commands with bat
+                       bat 'node -v'
+                       bat 'npm -v'
+
+                       // Downgrade npm to compatible version
+                       bat 'npm install -g npm@9.8.1'
+                       bat 'npm -v'
+
+                       // Clean old modules and lock file
+                       bat 'rd /s /q node_modules || echo node_modules not found'
+                       bat 'del package-lock.json || echo package-lock.json not found'
+
+                       // Optional: clean npm cache
+                       bat 'npm cache clean --force'
+                   }
+               }
+
+               stage('Install Dependencies') {
+                   steps {
+                       bat 'npm install --legacy-peer-deps'
+                   }
+               }
         stage('Checkout Code') {
             steps {
                 git branch: 'main',
