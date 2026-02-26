@@ -2,23 +2,23 @@ pipeline {
     agent any
 
     tools {
-        nodejs 'Node18'
+        nodejs 'node20'
     }
 
     environment {
         SONARQUBE_ENV = 'SonarQube'
         SONAR_TOKEN = credentials('kalpashram-frontend-sonar-token')
+        PATH = "${tool('node20')}\\bin;${env.PATH}"
     }
 
     stages {
-       stage('Clean Install') {
-            steps {
-                // Clean old modules and lock file
-                 bat 'node -v'
-                 bat 'npm -v'
-                 bat 'npm install --legacy-peer-deps'
-            }
-        }
+       stage('Fix npm version') {
+                   steps {
+                       bat 'npm install -g npm@9.8.1'
+                       bat 'npm -v'
+                       bat 'node -v'
+                   }
+               }
         stage('Checkout Code') {
             steps {
                 git branch: 'main',
