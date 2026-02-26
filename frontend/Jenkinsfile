@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     tools {
-        nodejs 'Node20'
+        nodejs 'Node20' // Make sure Node 20 is installed in Jenkins
     }
 
     environment {
@@ -20,7 +20,6 @@ pipeline {
                     branches: [[name: '*/main']],
                     userRemoteConfigs: [[
                         url: 'https://github.com/varsharitu55/kalp-ashram-digital-platform.git',
-
                     ]],
                     extensions: [
                         [$class: 'RelativeTargetDirectory', relativeTargetDir: '.']
@@ -35,19 +34,15 @@ pipeline {
                     bat 'node -v'
                     bat 'npm -v'
 
+                    // Remove old modules and lock file
                     bat 'if exist node_modules rd /s /q node_modules'
                     bat 'if exist package-lock.json del package-lock.json'
                     bat 'npm cache clean --force'
-                    bat 'npx ng build --configuration production'
-                    bat 'npm install --save-dev @angular/cli@21.2.0 --legacy-peer-deps'
-                    bat 'npx ng version'
-                }
-            }
-        }
 
-        stage('Install Dependencies') {
-            steps {
-                dir('frontend') {
+                    // Install Angular CLI locally
+                    bat 'npm install --save-dev @angular/cli@21.2.0 --legacy-peer-deps'
+
+                    // Install all project dependencies
                     bat 'npm install --legacy-peer-deps'
                 }
             }
@@ -56,7 +51,11 @@ pipeline {
         stage('Build') {
             steps {
                 dir('frontend') {
-                    bat 'npm run build -- --configuration production'
+                    // Check Angular version
+                    bat 'npx ng version'
+
+                    // Build production bundle
+                    bat 'npx ng build --configuration production'
                 }
             }
         }
@@ -87,6 +86,15 @@ pipeline {
             steps {
                 archiveArtifacts artifacts: 'frontend/dist/**/*', fingerprint: true
             }
+        }
+    }
+
+    post {
+        success {
+            echo 'Frontend pipeline completed successfully!'
+        }
+        failure {
+            echo 'Frontend pipeline failed!'
         }
     }
 }
