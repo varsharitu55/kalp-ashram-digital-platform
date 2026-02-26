@@ -2,7 +2,8 @@ pipeline {
     agent any
 
     tools {
-        nodejs 'Node20'
+        nodejs 'Node20'  // Node 20.19.0 installed in Jenkins
+        // Make sure Java is configured in Jenkins global tools if needed
     }
 
     environment {
@@ -12,30 +13,7 @@ pipeline {
     }
 
     stages {
-       stage('Setup') {
-                   steps {
-                       // Use Windows commands with bat
-                       bat 'node -v'
-                       bat 'npm -v'
 
-                       // Downgrade npm to compatible version
-                       bat 'npm install -g npm@9.8.1'
-                       bat 'npm -v'
-
-                       // Clean old modules and lock file
-                       bat 'rd /s /q node_modules || echo node_modules not found'
-                       bat 'del package-lock.json || echo package-lock.json not found'
-
-                       // Optional: clean npm cache
-                       bat 'npm cache clean --force'
-                   }
-               }
-
-               stage('Install Dependencies') {
-                   steps {
-                       bat 'npm install --legacy-peer-deps'
-                   }
-               }
         stage('Checkout Code') {
             steps {
                 git branch: 'main',
@@ -44,10 +22,29 @@ pipeline {
             }
         }
 
+        stage('Setup Node & Clean') {
+            steps {
+                dir('frontend') {
+                    // Node/npm versions
+                    bat 'node -v'
+                    bat 'npm -v'
+                    bat 'npm install -g npm@9.8.1'
+                    bat 'npm -v'
+
+                    // Clean old dependencies
+                    bat 'rd /s /q node_modules || echo node_modules not found'
+                    bat 'del package-lock.json || echo package-lock.json not found'
+
+                    // Optional: clear npm cache
+                    bat 'npm cache clean --force'
+                }
+            }
+        }
+
         stage('Install Dependencies') {
             steps {
                 dir('frontend') {
-                    bat 'npm install'
+                    bat 'npm install --legacy-peer-deps'
                 }
             }
         }
@@ -55,19 +52,19 @@ pipeline {
         stage('Lint') {
             steps {
                 dir('frontend') {
-                    bat 'npm run lint || true'   // Prevent pipeline failure if lint rules not set
+                    bat 'npm run lint || echo "Lint failed, skipping..."'
                 }
             }
         }
-stage('Check Java') {
-    steps {
-        bat """
-        echo JAVA_HOME=%JAVA_HOME%
-        java -version
-        """
-    }
-}
 
+        stage('Check Java') {
+            steps {
+                bat """
+                echo JAVA_HOME=%JAVA_HOME%
+                java -version
+                """
+            }
+        }
 
         stage('Build (Production)') {
             steps {
@@ -77,27 +74,27 @@ stage('Check Java') {
             }
         }
 
-stage('SonarQube Analysis') {
-    steps {
-        withSonarQubeEnv("${SONARQUBE_ENV}") {
-            bat """
-            ${tool 'SonarQubeCLI'}\\bin\\sonar-scanner.bat ^
-              -Dsonar.projectKey=KalpashramFrontend ^
-              -Dsonar.projectName=Kalpashram-frontend ^
-              -Dsonar.sources=frontend/src ^
-              -Dsonar.exclusions=**\\*.spec.ts ^
-              -Dsonar.typescript.lcov.reportPaths=frontend\\coverage\\lcov.info ^
-              -Dsonar.host.url=http://localhost:9000 ^
-              -Dsonar.login=%SONAR_TOKEN%
-            """
+        stage('SonarQube Analysis') {
+            steps {
+                dir('frontend') {
+                    withSonarQubeEnv("${SONARQUBE_ENV}") {
+                        bat """
+                        ${tool 'SonarQubeCLI'}\\bin\\sonar-scanner.bat ^
+                          -Dsonar.projectKey=KalpashramFrontend ^
+                          -Dsonar.projectName=Kalpashram-frontend ^
+                          -Dsonar.sources=src ^
+                          -Dsonar.exclusions=**\\*.spec.ts ^
+                          -Dsonar.typescript.lcov.reportPaths=coverage\\lcov.info ^
+                          -Dsonar.host.url=http://localhost:9000 ^
+                          -Dsonar.login=%SONAR_TOKEN%
+                        """
+                    }
+                }
+                timeout(time: 5, unit: 'MINUTES') {
+                    waitForQualityGate abortPipeline: false
+                }
+            }
         }
-
-        timeout(time: 5, unit: 'MINUTES') {
-            waitForQualityGate abortPipeline: false
-        }
-    }
-}
-
 
         stage('Archive Build Artifacts') {
             steps {
