@@ -21,7 +21,7 @@ export class AppComponent {
 
   private fb = inject(FormBuilder);
   private http = inject(HttpClient);
-  //backendErrors: any = {};
+  backendErrors: any = {};
   private titleService = inject(Title);
   constructor() {
     this.titleService.setTitle(this.title);
@@ -40,13 +40,13 @@ export class AppComponent {
 
       this.http.post('http://localhost:8080/api/registerUser', userData)
         .subscribe({
-          next: (response) => {
+          next: (response : any) => {
             console.log('Success!', response);
             alert('User created in MySQL!');
             this.userForm.reset();
             this.backendErrors = {}; // Clear errors on success
           },
-          error: (err) => {
+          error: (err : any) => {
             console.error('Registration failed', err);
             if (err.status === 400) {
               // This displays the validation messages you wrote in Java!
