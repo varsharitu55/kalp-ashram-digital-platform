@@ -17,6 +17,7 @@ pipeline {
                 sh 'npm install --legacy-peer-deps'
             }
         }
+     }
     stages {
 
         stage('Checkout Code') {
