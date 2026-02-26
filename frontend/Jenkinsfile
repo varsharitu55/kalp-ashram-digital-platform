@@ -20,7 +20,7 @@ pipeline {
                     branches: [[name: '*/main']],
                     userRemoteConfigs: [[
                         url: 'https://github.com/varsharitu55/kalp-ashram-digital-platform.git',
-                        
+
                     ]],
                     extensions: [
                         [$class: 'RelativeTargetDirectory', relativeTargetDir: '.']
@@ -34,10 +34,8 @@ pipeline {
                 dir('frontend') {
                     bat 'node -v'
                     bat 'npm -v'
-                    bat 'npm install -g npm@9.8.1'
-
-                    bat 'rd /s /q node_modules || echo none'
-                    bat 'del package-lock.json || echo none'
+                    bat 'if exist node_modules rd /s /q node_modules'
+                    bat 'if exist package-lock.json del package-lock.json'
                     bat 'npm cache clean --force'
                 }
             }
