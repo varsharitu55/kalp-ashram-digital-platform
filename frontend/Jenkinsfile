@@ -34,10 +34,11 @@ pipeline {
                 dir('frontend') {
                     bat 'node -v'
                     bat 'npm -v'
-                    bat 'npx ng version'
+
                     bat 'if exist node_modules rd /s /q node_modules'
                     bat 'if exist package-lock.json del package-lock.json'
                     bat 'npm cache clean --force'
+                    bat 'npx ng version'
                 }
             }
         }
