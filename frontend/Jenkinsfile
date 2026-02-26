@@ -38,6 +38,8 @@ pipeline {
                     bat 'if exist node_modules rd /s /q node_modules'
                     bat 'if exist package-lock.json del package-lock.json'
                     bat 'npm cache clean --force'
+                    bat 'npx ng build --configuration production'
+                    bat 'npm install --save-dev @angular/cli@21.2.0 --legacy-peer-deps'
                     bat 'npx ng version'
                 }
             }
