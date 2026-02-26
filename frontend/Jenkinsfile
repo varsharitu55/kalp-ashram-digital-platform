@@ -24,7 +24,7 @@ pipeline {
 
         stage('Setup Node & Clean') {
             steps {
-                dir('frontend') {
+                dir('kalpashram-digital-enquiry-service-ui/frontend') {
                     // Node/npm versions
                     bat 'node -v'
                     bat 'npm -v'
@@ -43,7 +43,7 @@ pipeline {
 
         stage('Install Dependencies') {
             steps {
-                dir('frontend') {
+                dir('kalpashram-digital-enquiry-service-ui/frontend') {
                     bat 'npm install --legacy-peer-deps'
                 }
             }
@@ -51,7 +51,7 @@ pipeline {
 
         stage('Lint') {
             steps {
-                dir('frontend') {
+                dir('kalpashram-digital-enquiry-service-ui/frontend') {
                     bat 'npm run lint || echo "Lint failed, skipping..."'
                 }
             }
@@ -68,7 +68,7 @@ pipeline {
 
         stage('Build (Production)') {
             steps {
-                dir('frontend') {
+                dir('kalpashram-digital-enquiry-service-ui/frontend') {
                     bat 'npm run build -- --configuration production'
                 }
             }
@@ -76,7 +76,7 @@ pipeline {
 
         stage('SonarQube Analysis') {
             steps {
-                dir('frontend') {
+                dir('kalpashram-digital-enquiry-service-ui/frontend') {
                     withSonarQubeEnv("${SONARQUBE_ENV}") {
                         bat """
                         ${tool 'SonarQubeCLI'}\\bin\\sonar-scanner.bat ^
@@ -98,7 +98,7 @@ pipeline {
 
         stage('Archive Build Artifacts') {
             steps {
-                archiveArtifacts artifacts: 'frontend/dist/**/*', fingerprint: true
+                archiveArtifacts artifacts: 'kalpashram-digital-enquiry-service-ui/frontend/dist/**/*', fingerprint: true
             }
         }
     }
