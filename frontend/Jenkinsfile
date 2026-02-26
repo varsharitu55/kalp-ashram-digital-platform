@@ -2,40 +2,42 @@ pipeline {
     agent any
 
     tools {
-        nodejs 'Node20'  // Node 20.19.0 installed in Jenkins
-        // Make sure Java is configured in Jenkins global tools if needed
+        nodejs 'Node20'
     }
 
     environment {
         SONARQUBE_ENV = 'SonarQube'
         SONAR_TOKEN = credentials('kalpashram-frontend-sonar-token')
-        PATH = "${tool('Node20')}\\bin;${env.PATH}"
     }
 
     stages {
 
         stage('Checkout Code') {
             steps {
-                git branch: 'main',
-                    credentialsId: 'github-creds',
-                    url: 'https://github.com/varsharitu55/kalp-ashram-digital-platform.git'
+                cleanWs()
+                checkout([
+                    $class: 'GitSCM',
+                    branches: [[name: '*/main']],
+                    userRemoteConfigs: [[
+                        url: 'https://github.com/varsharitu55/kalp-ashram-digital-platform.git',
+                        credentialsId: 'github-creds'
+                    ]],
+                    extensions: [
+                        [$class: 'RelativeTargetDirectory', relativeTargetDir: '.']
+                    ]
+                ])
             }
         }
 
-        stage('Setup Node & Clean') {
+        stage('Setup & Clean') {
             steps {
-                dir('kalpashram-digital-enquiry-service-ui/frontend') {
-                    // Node/npm versions
+                dir('frontend') {
                     bat 'node -v'
                     bat 'npm -v'
                     bat 'npm install -g npm@9.8.1'
-                    bat 'npm -v'
 
-                    // Clean old dependencies
-                    bat 'rd /s /q node_modules || echo node_modules not found'
-                    bat 'del package-lock.json || echo package-lock.json not found'
-
-                    // Optional: clear npm cache
+                    bat 'rd /s /q node_modules || echo none'
+                    bat 'del package-lock.json || echo none'
                     bat 'npm cache clean --force'
                 }
             }
@@ -43,32 +45,15 @@ pipeline {
 
         stage('Install Dependencies') {
             steps {
-                dir('kalpashram-digital-enquiry-service-ui/frontend') {
+                dir('frontend') {
                     bat 'npm install --legacy-peer-deps'
                 }
             }
         }
 
-        stage('Lint') {
+        stage('Build') {
             steps {
-                dir('kalpashram-digital-enquiry-service-ui/frontend') {
-                    bat 'npm run lint || echo "Lint failed, skipping..."'
-                }
-            }
-        }
-
-        stage('Check Java') {
-            steps {
-                bat """
-                echo JAVA_HOME=%JAVA_HOME%
-                java -version
-                """
-            }
-        }
-
-        stage('Build (Production)') {
-            steps {
-                dir('kalpashram-digital-enquiry-service-ui/frontend') {
+                dir('frontend') {
                     bat 'npm run build -- --configuration production'
                 }
             }
@@ -76,39 +61,30 @@ pipeline {
 
         stage('SonarQube Analysis') {
             steps {
-                dir('kalpashram-digital-enquiry-service-ui/frontend') {
+                dir('frontend') {
                     withSonarQubeEnv("${SONARQUBE_ENV}") {
-                        bat """
-                        ${tool 'SonarQubeCLI'}\\bin\\sonar-scanner.bat ^
-                          -Dsonar.projectKey=KalpashramFrontend ^
-                          -Dsonar.projectName=Kalpashram-frontend ^
-                          -Dsonar.sources=src ^
-                          -Dsonar.exclusions=**\\*.spec.ts ^
-                          -Dsonar.typescript.lcov.reportPaths=coverage\\lcov.info ^
-                          -Dsonar.host.url=http://localhost:9000 ^
-                          -Dsonar.login=%SONAR_TOKEN%
-                        """
+                        script {
+                            def scannerHome = tool 'SonarQubeCLI'
+                            bat """
+                            ${scannerHome}\\bin\\sonar-scanner.bat ^
+                              -Dsonar.projectKey=KalpashramFrontend ^
+                              -Dsonar.sources=src ^
+                              -Dsonar.login=%SONAR_TOKEN%
+                            """
+                        }
                     }
                 }
+
                 timeout(time: 5, unit: 'MINUTES') {
                     waitForQualityGate abortPipeline: false
                 }
             }
         }
 
-        stage('Archive Build Artifacts') {
+        stage('Archive') {
             steps {
-                archiveArtifacts artifacts: 'kalpashram-digital-enquiry-service-ui/frontend/dist/**/*', fingerprint: true
+                archiveArtifacts artifacts: 'frontend/dist/**/*', fingerprint: true
             }
-        }
-    }
-
-    post {
-        success {
-            echo 'Frontend pipeline completed successfully!'
-        }
-        failure {
-            echo 'Frontend pipeline failed!'
         }
     }
 }
