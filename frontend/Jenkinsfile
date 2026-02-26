@@ -27,26 +27,26 @@ pipeline {
                 ])
             }
         }
+stage('Setup & Clean') {
+    steps {
+        dir('frontend') {
+            bat 'node -v'
+            bat 'npm -v'
 
-        stage('Setup & Clean') {
-            steps {
-                dir('frontend') {
-                    bat 'node -v'
-                    bat 'npm -v'
+            // Full clean
+            bat 'if exist node_modules rd /s /q node_modules'
+            bat 'if exist package-lock.json del package-lock.json'
+            bat 'npm cache clean --force'
 
-                    // Remove old modules and lock file
-                    bat 'if exist node_modules rd /s /q node_modules'
-                    bat 'if exist package-lock.json del package-lock.json'
-                    bat 'npm cache clean --force'
+            // Install Angular CLI locally (no legacy flags)
+            bat 'npm install --save-dev @angular/cli@21.2.0'
 
-                    // Install Angular CLI locally
-                    bat 'npm install --save-dev @angular/cli@21.2.0 --legacy-peer-deps'
-
-                    // Install all project dependencies
-                    bat 'npm install --legacy-peer-deps'
-                }
-            }
+            // Install all project dependencies cleanly
+            bat 'npm install --no-optional'
         }
+    }
+}
+
 stage('Debug Workspace') {
     steps {
         dir('frontend') {
