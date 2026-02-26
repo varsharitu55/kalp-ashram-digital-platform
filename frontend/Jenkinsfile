@@ -14,8 +14,9 @@ pipeline {
        stage('Clean Install') {
             steps {
                 // Clean old modules and lock file
-                sh 'rm -rf node_modules package-lock.json'
-                sh 'npm install --legacy-peer-deps'
+                 bat 'node -v'
+                 bat 'npm -v'
+                 bat 'npm install --legacy-peer-deps'
             }
         }
         stage('Checkout Code') {
