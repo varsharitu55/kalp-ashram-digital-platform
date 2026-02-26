@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     tools {
-        nodejs 'Node20' // Make sure Node 20 is installed in Jenkins
+        nodejs 'Node22' // Make sure Node 20 is installed in Jenkins
     }
 
     environment {
@@ -37,12 +37,13 @@ stage('Setup & Clean') {
             bat 'if exist node_modules rd /s /q node_modules'
             bat 'if exist package-lock.json del package-lock.json'
             bat 'npm cache clean --force'
+            bat 'npm install -g npm@latest'
 
             // Install Angular CLI locally (no legacy flags)
             bat 'npm install --save-dev @angular/cli@21.2.0'
 
             // Install all project dependencies cleanly
-            bat 'npm install --no-optional'
+            bat 'npm ci'
         }
     }
 }
@@ -54,7 +55,7 @@ stage('Debug Workspace') {
             bat 'dir'
             bat 'dir node_modules'
             bat 'dir node_modules\\@angular\\common'
-            bat 'dir node_modules\\@angular\\common\\http'
+
         }
     }
 }
