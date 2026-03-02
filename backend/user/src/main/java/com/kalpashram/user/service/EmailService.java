@@ -14,6 +14,7 @@ public class EmailService {
     public void sendEnquiryEmail(EnquiryRequestDto req) {
         SimpleMailMessage msg = new SimpleMailMessage();
         msg.setTo("kalpashram@gmail.com");
+        msg.setFrom("kalpashram@gmail.com");
         msg.setSubject("New Enquiry Received");
         msg.setText("Name: " + req.getName() + "\n" + "Email: " + req.getEmail() + "\n" + "Phone: " + req.getPhone() + "\n" + "Message: " + req.getMessage());
         mailSender.send(msg);
