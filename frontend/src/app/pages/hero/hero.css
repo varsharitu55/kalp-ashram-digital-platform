@@ -39,7 +39,7 @@
 .home-section {
   width: 90%;
   display: grid;
-  grid-template-columns: 1fr 0.7fr ;/*add grid-template-columns: 1fr 0.7fr 1fr; if need 3 sections*/
+  grid-template-columns: 1fr 1fr ;/*add grid-template-columns: 1fr 0.7fr 1fr; if need 3 sections*/
   gap: 30px;
 }
 

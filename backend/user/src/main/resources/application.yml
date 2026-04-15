@@ -8,6 +8,11 @@
       username: ${DB_USERNAME}
       password: ${DB_PASSWORD}
 
+    security:
+      oauth2:
+        resourceserver:
+          jwt:
+            issuer-uri: http://localhost:9090/realms/kalpashramDigital
     mail:
       host: smtp.gmail.com
       port: 587
